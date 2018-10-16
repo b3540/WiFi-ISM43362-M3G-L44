@@ -2001,7 +2001,7 @@ void IsmDrvClass::ES_WIFI_ReceiveData(uint8_t Socket, uint8_t *pdata,
           if(strstr((char *)pdata,"-1\r\n"))
           {
             sockState[Socket] = SOCKET_FREE;
-            *Receivedlen = 0;
+            //*Receivedlen = 0;
           }
         }
       }
