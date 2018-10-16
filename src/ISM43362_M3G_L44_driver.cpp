@@ -396,6 +396,9 @@ void IsmDrvClass::AT_ParseAP(char *pdata, ES_WIFI_APs_t *APs)
     default:
       break;
     }
+    if( APs->nbr < ES_WIFI_MAX_DETECTED_AP) {
+      Drv->IO_Flush();
+    }
     ptr = strtok(NULL, ",");
   }
 }
@@ -1438,8 +1441,12 @@ void IsmDrvClass::ES_WIFI_DNS_LookUp(const char *url, IPAddress *ipaddress)
   if(ret == ES_WIFI_STATUS_OK)
   {
     ptr = strtok((char *)EsWifiObj.CmdData + 2, "\r");
-    ParseIP(ptr, temp);
-    *ipaddress = IPAddress(temp);
+    if(ptr != NULL) {
+      ParseIP(ptr, temp);
+      *ipaddress = IPAddress(temp);
+    } else {
+      Serial.println("ptr is NULL");
+    }
   }
 }
 
