@@ -328,4 +328,14 @@ int16_t SpiDrvClass::IO_Receive(uint8_t *pData, uint16_t len, uint32_t timeout)
   return length;
 }
 
+/**
+ * @brief  Flush Wi-Fi Data from SPI
+ * @param  None
+ * @retval None
+ */
+void SpiDrvClass::IO_Flush(void)
+{
+  ISM43362->flush();
+}
+
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/    

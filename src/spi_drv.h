@@ -66,6 +66,8 @@ public:
   virtual void IO_Delay (uint32_t time);
   virtual int16_t IO_Send (uint8_t *data, uint16_t len, uint32_t timeout);
   virtual int16_t IO_Receive (uint8_t *data, uint16_t len, uint32_t timeout);
+  virtual void IO_Flush(void);
+
 };
 
 #endif // SPI_DRV_H
