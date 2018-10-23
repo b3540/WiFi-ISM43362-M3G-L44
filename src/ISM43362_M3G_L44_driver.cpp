@@ -619,6 +619,7 @@ void IsmDrvClass::AT_ParseTrSettings(char *pdata, ES_WIFI_Conn_t *ConnSettings)
 ES_WIFI_Status_t IsmDrvClass::AT_ExecuteCommand(uint8_t *cmd, uint8_t *pdata)
 {
   int ret = 0;
+  int16_t recv_len = 0;
 
   if ((cmd == NULL) || (pdata == NULL)) {
     return ES_WIFI_STATUS_ERROR;
@@ -628,10 +629,15 @@ ES_WIFI_Status_t IsmDrvClass::AT_ExecuteCommand(uint8_t *cmd, uint8_t *pdata)
   ret = Drv->IO_Send(cmd, strlen((char *)cmd), EsWifiObj.Timeout);
   if (ret > 0) {
 
-    int16_t n = Drv->IO_Receive(pdata, ES_WIFI_DATA_SIZE, EsWifiObj.Timeout);
-    if ((n > 0) && (n < ES_WIFI_DATA_SIZE)) {
+    recv_len = Drv->IO_Receive(pdata, ES_WIFI_DATA_SIZE, EsWifiObj.Timeout);
+    if ((recv_len > 0) && (n <= ES_WIFI_DATA_SIZE)) {
+      if (recv_len == ES_WIFI_DATA_SIZE)
+      {
+        // ES_WIFI_DATA_SIZE maybe too small !!
+        recv_len--;
+      }
+      *(pdata + recv_len) = 0;
       PRINTCMD(pdata);
-      *(pdata + n) = 0;
       if (strstr((char *)pdata, AT_OK_STRING)) {
         return ES_WIFI_STATUS_OK;
       } else if (strstr((char *)pdata, AT_ERROR_STRING)) {
